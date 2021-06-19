@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>SCIM Provisioning - Getting users</shortname>
+  <description></description>
+  <url>/scim/v2/Users?filter={filter?}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+</webscript>
