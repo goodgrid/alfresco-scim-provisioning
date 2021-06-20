@@ -1,36 +1,24 @@
-var filter = args["filter"];
-var maxItems = args["count"];
-var startIndex = args["startIndex"]
+var filter = ((args["filter"]!==null)?args["filter"].replace("userName eq ",""):"");
+var maxItems = ((args["maxItems"]!==null)?args["maxItems"]:100);
+var startIndex = ((args["startIndex"]!==null)?args["startIndex"]:0);
 
-var filterArr = ((filter)?filter.split(" eq "):undefined);
+logger.warn("logging staat aan");
 
-var q = "TYPE:\"cm:person\"" + ((filterArr)?" AND @cm\\:userName:" + filterArr[1]:"");
-
-var page = 	{
-	maxItems: maxItems,
-	skipCount: startIndex
-}
-
-var count = search.query({
-	query: q,
-	page: page
-}).length;
-
-var users = search.query({
-	query: q,
-	page: page
-});
+var users = people.getPeople(filter,0);
 
 var result = {
-	"totalResults": count,
+	"totalResults": users.length,
 	"itemsPerPage": maxItems,
-	"startIndex": startIndex,
+	"startIndex": startIndex+1,
 	"resources": []
 };
 
+users = users.splice(startIndex-1,maxItems);
+
 for each (var user in users) {
+	user = search.findNode(user);
 	result.resources.push({
-		"id":user.properties["sys:node-uuid"],
+		"id":user.properties["cm:userName"],
 		"userName":user.properties["cm:userName"],
 		"active":(user.hasAspect("cm:personDisabled")?false:true),
 		"familyName":user.properties["cm:lastName"],
@@ -40,4 +28,3 @@ for each (var user in users) {
 }
 
 model.result = result;
-

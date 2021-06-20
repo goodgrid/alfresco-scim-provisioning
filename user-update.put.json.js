@@ -35,4 +35,4 @@ if (!user) {
 
 }
 
-logger.warn("SCIM: POST '/Users' queried with body " + jsonUtils.toJSONString(json) + " and response " + jsonUtils.toJSONString(result) );
+logger.warn("SCIM: PUT '/Users' queried with body " + jsonUtils.toJSONString(json) + " and response " + jsonUtils.toJSONString(result) );

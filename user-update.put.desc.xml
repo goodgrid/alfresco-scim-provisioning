@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>SCIM Provisioning - Updating user</shortname>
+  <description></description>
+  <url>/scim/v2/Users/{id}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+</webscript>

@@ -1,7 +1,4 @@
-
-
 <#if status.code = 200>
-
 {
     "schemas":  [
         "urn:ietf:params:scim:api:messages:2.0:ListResponse"
@@ -10,21 +7,21 @@
     "userName":"${result.userName!}",
     "active":"${result.active?c}",
     "name": {
-    "familyName":"${result.familyName!"no value"}",
-    "givenName":"${result.givenName!"no value"}"
+        "familyName":"${result.familyName!"no value"}",
+        "givenName":"${result.givenName!"no value"}"
     },
     "emails": [{
-    "value":"${result.email!"no value"}"
+        "primary":true,
+        "type":"work"
+        "value":"${result.email!"no value"}"
     }]
-
 }
 
 <#else>
-    {
+{
     "schemas":  [
-    "urn:ietf:params:scim:api:messages:2.0:Error"
+        "urn:ietf:params:scim:api:messages:2.0:Error"
     ],
     "detail":"${status.message!}"
 }
-
 </#if>
