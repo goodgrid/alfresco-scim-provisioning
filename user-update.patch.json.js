@@ -1,21 +1,18 @@
+logger.warn("SCIM: PATCH '/Users' Request with templateArgs " + url.templateArgs + " and body " + jsonUtils.toJSONString(json);
 
+var id = url.templateArgs["id"];
 var userName = json.get("userName");
 var firstName = jsonUtils.toObject(json.get("name")).givenName;
 var lastName = jsonUtils.toObject(json.get("name")).familyName;
 var mailAddress = jsonUtils.toObject(json.get("emails"))[0].value;
 
 
-var user = people.getPerson(userName);
+var user = people.getPerson(id);
 
-if (!user) {
+if (user) {
     try {
-        user = people.createPerson(userName);
-        user.properties["cm:firstName"] = firstName;
-        user.properties["cm:lastName"] = lastName;
-        user.properties["cm:mailAddress"] = mailAddress;
-        user.save();
 
-        status.code = 201;
+        status.code = 200;
 
         model.user = {
             id: user.properties["cm:userName"],
@@ -23,16 +20,16 @@ if (!user) {
             active: (user.hasAspect("cm:personDisabled") ? false : true),
             givenName: user.properties["cm:firstName"],
             familyName: user.properties["cm:lastName"],
-            email: user.properties["cm:mailAddress"]
+            email: user.properties["cm:email"]
         };
     } catch(error) {
         status.code = 500;
         status.message = "Error creating user: " + userName;
     }
 } else {
-    status.code = 409;
-    status.message = "A user with that username already exists";
+    status.code = 404;
+    status.message = "User not found";
 
 }
 
-logger.warn("SCIM: PUT '/Users' queried with body " + jsonUtils.toJSONString(json) + " and response " + jsonUtils.toJSONString(result) );
+logger.warn("SCIM: PATCH '/Users' Request had response " + jsonUtils.toJSONString(model.user) );

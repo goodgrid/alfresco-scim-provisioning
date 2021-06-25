@@ -1,3 +1,4 @@
+logger.warn("SCIM: GET '/Users/ queried with templateArgs " + url.templateArgs + "' queried with args " + args);
 
 var id = url.templateArgs["id"];
 
@@ -8,15 +9,15 @@ if (user === null) {
 	status.message = "Resource not found";
 } else {
 
-	var result = {
+	model.user = {
 		"id": user.properties["cm:userName"],
 		"userName": user.properties["cm:userName"],
-		"active": (user.hasAspect("cm:personDisabled") ? false : true),
+		"active":((people.isAccountDisabled(user.properties["cm:userName"])?false:true),
 		"familyName": user.properties["cm:lastName"],
 		"givenName": user.properties["cm:firstName"],
-		"email": user.properties["cm:email"]
+		"email": user.properties["cm:email"]		
 	};
 
-	model.result = result;
-
 }
+
+logger.warn("SCIM: GET '/Users/" + id + "; request had response " + jsonUtils.toJSONString(model.user) );

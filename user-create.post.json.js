@@ -1,4 +1,6 @@
 
+logger.warn("SCIM: POST '/Users' Request with templateArgs " + url.templateArgs + " and body " + jsonUtils.toJSONString(json));
+
 var userName = json.get("userName");
 var firstName = jsonUtils.toObject(json.get("name")).givenName;
 var lastName = jsonUtils.toObject(json.get("name")).familyName;
@@ -9,11 +11,7 @@ var user = people.getPerson(userName);
 
 if (!user) {
     try {
-        user = people.createPerson(userName);
-        user.properties["cm:firstName"] = firstName;
-        user.properties["cm:lastName"] = lastName;
-        user.properties["cm:mailAddress"] = mailAddress;
-        user.save();
+        user = people.createPerson1(userName, firstName, lastName, mailAddress, "password", true, true)
 
         status.code = 201;
 
@@ -23,11 +21,11 @@ if (!user) {
             active: (user.hasAspect("cm:personDisabled") ? false : true),
             givenName: user.properties["cm:firstName"],
             familyName: user.properties["cm:lastName"],
-            email: user.properties["cm:mailAddress"]
+            email: user.properties["cm:email"]
         };
     } catch(error) {
         status.code = 500;
-        status.message = "Error creating user: " + userName;
+        status.message = "Error creating user: " + userName + ": " + error;
     }
 } else {
     status.code = 409;
@@ -35,4 +33,4 @@ if (!user) {
 
 }
 
-logger.warn("SCIM: POST '/Users' queried with body " + jsonUtils.toJSONString(json) + " and response " + jsonUtils.toJSONString(result) );
+logger.warn("SCIM: POST '/Users' Request had response " + jsonUtils.toJSONString(model.user) );
