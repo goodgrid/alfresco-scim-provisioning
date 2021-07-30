@@ -15,12 +15,12 @@ if (user) {
         status.code = 200;
 
         model.user = {
-            id: user.properties["cm:userName"],
-            userName: user.properties["cm:userName"],
-            active: (user.hasAspect("cm:personDisabled") ? false : true),
-            givenName: user.properties["cm:firstName"],
-            familyName: user.properties["cm:lastName"],
-            email: user.properties["cm:email"]
+            "id": user.properties["cm:userName"],
+            "userName": user.properties["cm:userName"],
+            "active":people.isAccountEnabled(user.properties["cm:userName"]),
+            "givenName": user.properties["cm:firstName"],
+            "familyName": user.properties["cm:lastName"],
+            "email": user.properties["cm:email"]
         };
     } catch(error) {
         status.code = 500;

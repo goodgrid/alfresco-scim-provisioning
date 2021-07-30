@@ -1,7 +1,7 @@
 <webscript>
   <shortname>SCIM Provisioning - Creating user</shortname>
   <description></description>
-  <url>/scim/v2/Users</url>
+  <url>/okta/scim/v2/Users</url>
   <format default="json">argument</format>
   <authentication>user</authentication>
   <transaction>required</transaction>

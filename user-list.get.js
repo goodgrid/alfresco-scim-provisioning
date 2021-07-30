@@ -4,7 +4,7 @@ var filter = ((args["filter"]!==null)?args["filter"].replace("userName eq ",""):
 var count = Number(((args["count"]!==null)?args["count"]:100));
 var startIndex = Number(((args["startIndex"]!==null)?args["startIndex"]:1));
 
-var users = people.getPeople(filter,0);
+var users = people.getPeople(filter,1000);
 
 users = users.splice(startIndex-1,count);
 
@@ -15,7 +15,7 @@ for each (var user in users) {
 	resources.push({
 		"id":user.properties["cm:userName"],
 		"userName":user.properties["cm:userName"],
-		"active":(people.isAccountDisabled(user.properties["cm:userName"]))?false:true,
+		"active":people.isAccountEnabled(user.properties["cm:userName"]),
 		"familyName":user.properties["cm:lastName"],
 		"givenName":user.properties["cm:firstName"],
 		"email": user.properties["cm:email"]
@@ -25,11 +25,12 @@ for each (var user in users) {
 var result = {
 	"totalResults": users.length,
 	"startIndex": startIndex,
-	"itemsPerPage": count,
+	"itemsPerPage": ((users.length<count)?users.length:count),
 	"resources": resources
 };
 
 
 model.result = result;
+
 
 logger.warn("SCIM: GET '/Users' queried with args " + args + " and response " + jsonUtils.toJSONString(result) );

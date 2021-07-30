@@ -12,7 +12,7 @@ if (user === null) {
 	model.user = {
 		"id": user.properties["cm:userName"],
 		"userName": user.properties["cm:userName"],
-		"active":((people.isAccountDisabled(user.properties["cm:userName"])?false:true),
+		"active":people.isAccountEnabled(user.properties["cm:userName"]),
 		"familyName": user.properties["cm:lastName"],
 		"givenName": user.properties["cm:firstName"],
 		"email": user.properties["cm:email"]		
